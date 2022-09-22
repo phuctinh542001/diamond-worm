@@ -1,0 +1,166 @@
+/* Reset CSS */
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+li {
+    list-style-type: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* Set up */
+html {
+    scroll-behavior: smooth;
+    
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: url('../img/background3.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+header {
+    text-align: center;
+    color: white;
+}
+
+header h2 {
+    font-size: 28px;
+    font-weight: 800;
+}
+header .score {
+    display: flex;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+#game {
+    display: flex;
+    justify-content: space-evenly;
+    padding: 12px;
+}
+
+#board {
+    width: 100vmin;
+    height: 80vmin;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: repeat(12, 1fr);
+    box-shadow: 0 0 12px 12px rgba(170, 239, 255, 0.8);
+    border-radius: 16px;
+    border: 8px solid rgb(170, 239, 255);
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.levels {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.level {
+    flex: 0 1 30%;
+    margin: 0 12px 24px;
+    height: 80px;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: rgb(9, 35, 53);
+    border: none;
+    border-radius: 16px;
+    background-color: #6192d6;
+    background-image: linear-gradient(315deg, #63a4ff 0%, #83eaf1 74%);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+}
+
+.level:hover {
+    cursor: pointer;
+    background-color: rgb(158, 189, 216);
+    background-image: linear-gradient(315deg, #b7cdf7 0%, #83eaf1 74%);
+}
+
+#board .message {
+    grid-column-start: 4;
+    grid-column-end: 10;
+    grid-row-start: 5;
+    grid-row-end: 8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: white;
+    border: none;
+    border-radius: 16px;
+    background-color: #6192d6;
+    background-image: linear-gradient(315deg, #63a4ff 0%, #83eaf1 74%);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+}
+
+#setting {
+    width: 20vmin;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#setting .setting__btn {
+    margin-bottom: 12px;
+    padding: 12px;
+    width: 80%;
+    background-color: #63a4ff;
+    background-image: linear-gradient(315deg, #63a4ff 0%, #83eaf1 74%);
+    border-radius: 16px;
+}
+
+#setting .setting__btn:hover {
+    cursor: pointer;
+    background-color: aliceblue;
+    background-image: linear-gradient(315deg, #ffffff 0%, #83eaf1 74%);
+}
+
+
+#setting .setting__btn i {
+    font-size: 40px;
+}
+
+.diamond {
+    background-image: url('../img/diamond1-rb.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.head {
+    background-image: url('../img/head.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.tail {
+    background-image: url('../img/diamond2-rb.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.wall {
+    background-image: url('../img/wall.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.gate {
+    background-image: url('../img/gate.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+}
