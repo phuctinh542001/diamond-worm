@@ -34,7 +34,7 @@ function loadGame(levelNum) {
     $('#level').innerHTML = `YOUR LEVEL: ${levelNum}`
     localStorage.setItem('currentLevel', JSON.stringify(levelNum));
 
-    level = levels[levelNum - 1];
+    level = structuredClone(levels[levelNum - 1]);
     snakeHead = level.snakeHead;
     snakeTail = level.snakeTail;
     snakeDirt = [1, 0];
@@ -48,15 +48,13 @@ function loadGame(levelNum) {
 
     const boardTemp = document.createElement('div');
     boardTemp.id = 'board';
-    console.log(board)
     
     $('#game').appendChild(boardTemp);
     board = $('#board');
-
+    
     renderGame();
     
     document.addEventListener('keydown', e => {
-        console.log('hello')
         switch (e.code) {
             case 'ArrowUp': 
                 moveAudio.play();
@@ -316,7 +314,7 @@ function gameWin() {
 
     const winMessage = document.createElement('div');
     winMessage.classList.add('message');
-    winMessage.innerHTML = 'Hay đó ku';
+    winMessage.innerHTML = 'Chúc mừng! <br> Bạn đã vượt qua ải';
 
     board.appendChild(winMessage);
 }
@@ -329,11 +327,12 @@ function gameOver() {
     const winMessage = document.createElement('div');
     winMessage.classList.add('message');
     if (gameStatus === 1) {
-        winMessage.innerHTML = 'Tao bị ngã <br> rồi thằng ngu';
+        winMessage.innerHTML = 'Ngu! Bạn bị ngã chết';
     } else {
-        winMessage.innerHTML = 'Tao không thở được';
+        winMessage.innerHTML = 'Ngu! Bạn không thể <br> di chuyển nữa';
     }
 
+    gameStatus = 0;
     board.appendChild(winMessage); 
 }
 
@@ -398,7 +397,7 @@ $('.music').addEventListener('click', function() {
 })
 
 $('.reload').addEventListener('click', function() {
-    level = levels[currentLevel - 1];
+    level = structuredClone(levels[currentLevel - 1]);
     snakeHead = level.snakeHead;
     snakeTail = level.snakeTail;
     snakeDirt = [1, 0];
@@ -416,7 +415,6 @@ $('.reload').addEventListener('click', function() {
 
     const boardTemp = document.createElement('div');
     boardTemp.id = 'board';
-    console.log(board)
     
     $('#game').appendChild(boardTemp);
     board = $('#board');
