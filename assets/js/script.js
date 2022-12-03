@@ -24,14 +24,15 @@ let wall;
 let diamond;
 let gate;
 
-let currentLevel = JSON.parse(localStorage.getItem('currentLevel'));
+let currentLevel = Number(JSON.parse(localStorage.getItem('currentLevel')));
 
-// Render snake and Diamond
-// renderGame();
+// ====================
+// Function
+// ====================
 
+// Hàm load level game
 function loadGame(levelNum) {
     currentLevel = levelNum;
-    $('#level').innerHTML = `YOUR LEVEL: ${levelNum}`
     localStorage.setItem('currentLevel', JSON.stringify(levelNum));
 
     level = structuredClone(levels[levelNum - 1]);
@@ -76,8 +77,12 @@ function loadGame(levelNum) {
                 break;
         }
     });
+
+    console.log(typeof currentLevel);
+    console.log(currentLevel);
 }
 
+// Hàm kiểm tra di chuyển của con rắn
 function checkInput(direction) {
     if (checkHitTail(direction)) {
         return
@@ -161,12 +166,14 @@ function gameHandle(direction) {
     
 }
 
+// Hàm ăn kim cương
 function eatDiamond() {
     snakeTail.unshift([...snakeHead]);
     snakeHead = [...diamond];
     diamond = [];
 }
 
+// Hàm cập nhật lại vị trí con rắn
 function updateSnake(direction) {
     // Update Snake
     for (let i = snakeTail.length - 1; i > 0; i--) {
@@ -178,7 +185,8 @@ function updateSnake(direction) {
     snakeHead[0] += direction[0];
     snakeHead[1] += direction[1];
 }
- 
+
+// Hàm kiểm tra con rắn rơi xuống
 function checkGravity() {
     for (let i = 0; true; i++) {
         let over = false;
@@ -227,7 +235,9 @@ function checkGravity() {
     }
 }
 
+// Hàm render khung game
 function renderGame() {
+    $('#level').innerHTML = `YOUR LEVEL: ${currentLevel}`
     board.innerHTML = '';
 
     // Render wall
@@ -246,9 +256,9 @@ function renderGame() {
     
 
     createBlock(diamond, 'diamond');
-
 }
 
+// Hàm cho con rắn rơi xuống
 function downSnake(downDistance) {
     for (let i = 0; i < snakeTail.length; i++) {
         snakeTail[i][1] = snakeTail[i][1] + downDistance;
@@ -256,6 +266,7 @@ function downSnake(downDistance) {
     snakeHead[1] = snakeHead[1] + downDistance; 
 }
 
+// Hàm kiểm tra di chuyển tiếp theo
 function checkNextMove() {
     let up = true;
     let down = true;
@@ -281,6 +292,7 @@ function checkNextMove() {
     return true;
 }
 
+// Hàm kiểm tra cắn phải tường
 function checkHitWall(direction) {
     let headTemp = [];
     headTemp[0] = snakeHead[0] + direction[0];
@@ -295,6 +307,7 @@ function checkHitWall(direction) {
     return false;
 }
 
+// Hàm kiểm tra cắn phải đuôi
 function checkHitTail(direction) {
     let headTemp = [];
     headTemp[0] = snakeHead[0] + direction[0];
@@ -309,12 +322,13 @@ function checkHitTail(direction) {
     return false;
 }
 
+// Hàm qua vượt ải thành công
 function gameWin() {
     board.innerHTML = '';
 
     const winMessage = document.createElement('div');
     winMessage.classList.add('message');
-    winMessage.innerHTML = 'Chúc mừng! <br> Bạn đã vượt qua ải';
+    winMessage.innerHTML = 'Chúc mừng! <br> Bạn đã vượt qua ải !';
 
     board.appendChild(winMessage);
 }
@@ -327,17 +341,13 @@ function gameOver() {
     const winMessage = document.createElement('div');
     winMessage.classList.add('message');
     if (gameStatus === 1) {
-        winMessage.innerHTML = 'Ngu! Bạn bị ngã chết';
+        winMessage.innerHTML = 'NON! Bạn bị ngã chết';
     } else {
-        winMessage.innerHTML = 'Ngu! Bạn không thể <br> di chuyển nữa';
+        winMessage.innerHTML = 'NON! Bạn không thể <br> di chuyển nữa';
     }
 
     gameStatus = 0;
     board.appendChild(winMessage); 
-}
-
-function statusHandle() {
-    
 }
 
 // Create block board game
@@ -359,6 +369,11 @@ function compareBlock(pos1, pos2) {
     return false;
 }
 
+// ====================
+// Events
+// ====================
+
+// Sự kiện load trang mở đầu 
 window.addEventListener('load', function() {
     $('#level').innerHTML = `YOUR LEVEL: ${currentLevel}`
     const gameArea = $('#game');
@@ -373,18 +388,18 @@ window.addEventListener('load', function() {
 
         levelsGame.appendChild(levelGame);
     }
-
-    // gameArea.appendChild(levelsGame);
 })
 
+// Sự kiện tải màn chơi
 $('#game').addEventListener('click', function(e) {
     if (e.target.closest('.level')) {
-        const levelNum = e.target.closest('.level').dataset.index;
+        const levelNum = Number(e.target.closest('.level').dataset.index);
     
         loadGame(levelNum);
     }
 })
 
+// Sự kiện nút bật/tắt nhạc
 $('.music').addEventListener('click', function() {
     if (musicAudio.paused) {
         musicEL.innerHTML = '<i class="fa-solid fa-volume-high"></i>';
@@ -396,6 +411,7 @@ $('.music').addEventListener('click', function() {
     musicEL.blur();
 })
 
+// Sự kiện nút tải lại trò chơi
 $('.reload').addEventListener('click', function() {
     level = structuredClone(levels[currentLevel - 1]);
     snakeHead = level.snakeHead;
@@ -423,6 +439,35 @@ $('.reload').addEventListener('click', function() {
 
 })
 
+$('.next').addEventListener('click', function() {
+    level = structuredClone(levels[currentLevel]);
+    snakeHead = level.snakeHead;
+    snakeTail = level.snakeTail;
+    snakeDirt = [1, 0];
+    wall = level.wall;
+    diamond = level.diamond;
+    gate = level.gate;
+
+    if ($('.levels')) {
+        $('.levels').remove();
+    }
+    
+    if (board) {
+        board.remove();
+    }
+
+    const boardTemp = document.createElement('div');
+    boardTemp.id = 'board';
+    
+    $('#game').appendChild(boardTemp);
+    board = $('#board');
+
+    currentLevel++;
+
+    renderGame();
+})
+
+// Sự kiện nút menu
 $('.menu').addEventListener('click', function() {
     location.reload();
 })
